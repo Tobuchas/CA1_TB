@@ -185,6 +185,33 @@ void displaySpecificHabitat(vector<Lizard> &data, string spec) {
     }
 }
 
+void displayAgeValues(vector<Lizard> &data) {
+    int highest = data[0].age;
+    int highIndex = 0;
+    int lowest = data[0].age;
+    int lowIndex = 0;
+    int total = data[0].age;
+    double average;
+    for(int i = 1; i < data.size(); i++) {
+        if(data[i].age > highest) {
+            highest = data[i].age;
+            highIndex = i;
+        }
+        if(data[i].age < lowest) {
+            lowest = data[i].age;
+            lowIndex = i;
+        }
+        total += data[i].age;
+    }
+    average = total / data.size();
+    cout << "Average:" <<endl;
+    cout << average << endl;
+    cout << "Highest:" <<endl;
+    display(data[highIndex]);
+    cout << "Lowest:" <<endl;
+    display(data[lowIndex]);
+}
+
 
 int main() {
     // Lizard lizard;
@@ -210,4 +237,5 @@ int main() {
     cout << "Please input the name of what habitat you want" << endl;
     getline(cin,input);
     displaySpecificHabitat(data, input);
+    displayAgeValues(data);
 }
