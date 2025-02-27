@@ -212,6 +212,20 @@ void displayAgeValues(vector<Lizard> &data) {
     display(data[lowIndex]);
 }
 
+vector<string> findSpecies(vector<Lizard> &data,string input) {
+    vector<string> result;
+    string inputLowercase = input;
+    transform(inputLowercase.begin(), inputLowercase.end(), inputLowercase.begin(), ::tolower);
+    for (auto it = data.begin(); it != data.end(); it++) {
+        string titleLowercase = it->species;
+        transform(titleLowercase.begin(), titleLowercase.end(), titleLowercase.begin(), ::tolower);
+        if (titleLowercase.find(inputLowercase) != string::npos) {
+            result.push_back(titleLowercase);
+        }
+    }
+    return result;
+}
+
 
 int main() {
     // Lizard lizard;
@@ -238,4 +252,15 @@ int main() {
     getline(cin,input);
     displaySpecificHabitat(data, input);
     displayAgeValues(data);
+    cout << endl << endl << endl;
+
+    cout << "Please input the name of what species you are searching for" << endl;
+    cin >> input;
+    vector<string> searchResults = findSpecies(data, input);
+    for(auto it = searchResults.begin(); it != searchResults.end(); it++) {
+        cout << *it << endl;
+    }
+
+    return 0;
+
 }
