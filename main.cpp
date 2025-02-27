@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
+#include <map>
 
 using namespace std;
 
@@ -75,6 +76,116 @@ void load(const string &fname, vector<Lizard> &data)
     }
 }
 
+int find(vector<Lizard> &data, string target) {
+    int index = -1;
+    for(int i = 0; i < data.size(); i++) {
+        if(data[i].species == target) {
+            index = i;
+        }
+    }
+    return index;
+}
+
+
+map<string,int> mapUniqueSpecies(vector<Lizard> &data) {
+    map<string,int> map;
+    map.insert(pair<string,int>(data[0].species,1));
+    for(int i = 1; i < data.size(); i++) {
+        if(map.find(data[i].species) != map.end()) {
+            map[data[i].species] = map[data[i].species] + 1;
+        }
+        else {
+            map.insert(pair<string,int>(data[i].species,1));
+        }
+    }
+    return map;
+}
+
+map<float,int> mapUniqueLength(vector<Lizard> &data) {
+        map<float,int> map;
+        map.insert(pair<float,int>(data[0].length,1));
+        for(int i = 1; i < data.size(); i++) {
+            if(map.find(data[i].length) != map.end()) {
+                map[data[i].length] = map[data[i].length] + 1;
+            }
+            else {
+                map.insert(pair<float,int>(data[i].length,1));
+            }
+        }
+        return map;
+}
+
+map<string,int> mapUniqueHabitat(vector<Lizard> &data) {
+    map<string,int> map;
+    map.insert(pair<string,int>(data[0].habitat,1));
+    for(int i = 1; i < data.size(); i++) {
+        if(map.find(data[i].habitat) != map.end()) {
+            map[data[i].habitat] = map[data[i].habitat] + 1;
+        }
+        else {
+            map.insert(pair<string,int>(data[i].habitat,1));
+        }
+    }
+    return map;
+}
+
+map<string,int> mapUniqueDiet(vector<Lizard> &data) {
+    map<string,int> map;
+    map.insert(pair<string,int>(data[0].diet,1));
+    for(int i = 1; i < data.size(); i++) {
+        if(map.find(data[i].diet) != map.end()) {
+            map[data[i].diet] = map[data[i].diet] + 1;
+        }
+        else {
+            map.insert(pair<string,int>(data[i].diet,1));
+        }
+    }
+    return map;
+}
+
+map<int,int> mapUniqueAge(vector<Lizard> &data) {
+    map<int,int> map;
+    map.insert(pair<int,int>(data[0].age,1));
+    for(int i = 1; i < data.size(); i++) {
+        if(map.find(data[i].age) != map.end()) {
+            map[data[i].age] = map[data[i].age] + 1;
+        }
+        else {
+            map.insert(pair<int,int>(data[i].age,1));
+        }
+    }
+    return map;
+}
+
+void displaySpecificSpecies(vector<Lizard> &data, string spec) {
+    bool found = false;
+    for(int i = 0; i < data.size(); i++) {
+        if(data[i].species == spec) {
+            display(data[i]);
+            found = true;
+        }
+
+    }
+    if(!found) {
+        cout << "Species not found:" <<endl;
+    }
+}
+
+void displaySpecificHabitat(vector<Lizard> &data, string spec) {
+    bool found = false;
+    for(int i = 0; i < data.size(); i++) {
+        if(data[i].habitat == spec) {
+            display(data[i]);
+            found = true;
+        }
+
+    }
+    if(!found) {
+        cout << "Habitat not found:" <<endl;
+    }
+}
+
+
 int main() {
     // Lizard lizard;
     // lizard.species = "Crack";
@@ -86,7 +197,17 @@ int main() {
 
     vector<Lizard> data;
     load("lizardsTable.csv", data);
-
-
     displayAll(data);
+    cout << endl << endl << endl;
+    map<string,int> map = mapUniqueHabitat(data);
+    for (const auto& pair : map) {
+        cout << pair.first << " => " << pair.second << endl;
+    }
+    cout << endl << endl << endl;
+
+
+    string input;
+    cout << "Please input the name of what habitat you want" << endl;
+    getline(cin,input);
+    displaySpecificHabitat(data, input);
 }
