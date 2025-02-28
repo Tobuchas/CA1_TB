@@ -226,6 +226,17 @@ vector<string> findSpecies(vector<Lizard> &data,string input) {
     return result;
 }
 
+void displaySortedLength(vector<Lizard> &data) {
+    sort(data.begin(), data.end(), [](const Lizard &a, const Lizard &b) {
+        return a.length > b.length;
+    });
+    cout << "Sorted by Length:" <<endl;
+    cout << endl;
+    for(int i = 0; i < data.size(); i++) {
+        display(data[i]);
+    }
+}
+
 
 int main() {
     // Lizard lizard;
@@ -260,6 +271,9 @@ int main() {
     for(auto it = searchResults.begin(); it != searchResults.end(); it++) {
         cout << *it << endl;
     }
+
+    cout << endl << endl << endl;
+    displaySortedLength(data);
 
     return 0;
 
