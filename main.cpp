@@ -38,7 +38,7 @@ void displayAll(vector<Lizard> &liz) {
     }
 }
 
-
+//This method has been borrowed from proffesro Dermot Louge
 void parseLine(string line,Lizard &liz)
 {
 
@@ -55,7 +55,7 @@ void parseLine(string line,Lizard &liz)
 
 }
 
-
+//This method has been borrowed from proffesro Dermot Louge
 void load(const string &fname, vector<Lizard> &data)
 {
     ifstream fin(fname);
@@ -79,6 +79,7 @@ void load(const string &fname, vector<Lizard> &data)
     }
 }
 
+//Find gives back an index of found species or -1 if not found
 int find(vector<Lizard> &data, string target) {
     int index = -1;
     for(int i = 0; i < data.size(); i++) {
@@ -89,7 +90,7 @@ int find(vector<Lizard> &data, string target) {
     return index;
 }
 
-
+//Maps Unique Specie names to the counts of how many times they appear in the table
 map<string,int> mapUniqueSpecies(vector<Lizard> &data) {
     map<string,int> map;
     map.insert(pair<string,int>(data[0].species,1));
@@ -103,6 +104,8 @@ map<string,int> mapUniqueSpecies(vector<Lizard> &data) {
     }
     return map;
 }
+
+//Maps Unique Lengths to the counts of how many times they appear in the table
 
 map<float,int> mapUniqueLength(vector<Lizard> &data) {
         map<float,int> map;
@@ -118,6 +121,7 @@ map<float,int> mapUniqueLength(vector<Lizard> &data) {
         return map;
 }
 
+//Maps Unique Habitat names to the counts of how many times they appear in the table
 map<string,int> mapUniqueHabitat(vector<Lizard> &data) {
     map<string,int> map;
     map.insert(pair<string,int>(data[0].habitat,1));
@@ -132,6 +136,7 @@ map<string,int> mapUniqueHabitat(vector<Lizard> &data) {
     return map;
 }
 
+//Maps Unique types of Diet to the counts of how many times they appear in the table
 map<string,int> mapUniqueDiet(vector<Lizard> &data) {
     map<string,int> map;
     map.insert(pair<string,int>(data[0].diet,1));
@@ -146,6 +151,7 @@ map<string,int> mapUniqueDiet(vector<Lizard> &data) {
     return map;
 }
 
+//Maps Unique Ages to the counts of how many times they appear in the table
 map<int,int> mapUniqueAge(vector<Lizard> &data) {
     map<int,int> map;
     map.insert(pair<int,int>(data[0].age,1));
@@ -160,6 +166,8 @@ map<int,int> mapUniqueAge(vector<Lizard> &data) {
     return map;
 }
 
+
+//This is the Find method but instead of an index displays the actual Lizard
 void displaySpecificSpecies(vector<Lizard> &data, string spec) {
     bool found = false;
     for(int i = 0; i < data.size(); i++) {
@@ -174,6 +182,7 @@ void displaySpecificSpecies(vector<Lizard> &data, string spec) {
     }
 }
 
+//Find method for the Habitat
 void displaySpecificHabitat(vector<Lizard> &data, string spec) {
     bool found = false;
     for(int i = 0; i < data.size(); i++) {
@@ -188,6 +197,7 @@ void displaySpecificHabitat(vector<Lizard> &data, string spec) {
     }
 }
 
+//Displays the Highest Aged, Lowest Aged and the average of the Ages of lizards
 void displayAgeValues(vector<Lizard> &data) {
     int highest = data[0].age;
     int highIndex = 0;
@@ -215,6 +225,7 @@ void displayAgeValues(vector<Lizard> &data) {
     display(data[lowIndex]);
 }
 
+//Find but it displays all results containing the input String
 vector<string> findSpecies(vector<Lizard> &data,string input) {
     vector<string> result;
     string inputLowercase = input;
@@ -229,6 +240,7 @@ vector<string> findSpecies(vector<Lizard> &data,string input) {
     return result;
 }
 
+//Sorts the table by Length Descending and Displays
 void displaySortedLength(vector<Lizard> &data) {
     sort(data.begin(), data.end(), [](const Lizard &a, const Lizard &b) {
         return a.length > b.length;
@@ -240,7 +252,7 @@ void displaySortedLength(vector<Lizard> &data) {
     }
 }
 
-
+//The Main with the Menu
 int main() {
 
     vector<Lizard> data;
@@ -249,6 +261,7 @@ int main() {
     int menuOption;
     string input;
 
+    //Menu containing the options needed for the questions
     do {
         cout << "_________________________________________________\n";
         cout << "#           Tomas's Database of Lizards         #\n";
@@ -264,12 +277,20 @@ int main() {
         cout << "#                   8. Exit                     #\n";
         cout << "_________________________________________________\n";
 
+        //Gets the input option
         cin >> menuOption;
-        cin.ignore();
+        cin.ignore();  //Assures inputs go through as they should
 
         cout << endl;
 
+        //The skeleton of the Menu
         switch(menuOption) {
+            //1. Display all Lizards
+            case 1:
+                displayAll(data);
+            break;
+
+            //2. Find a specific lizard
             case 2:
                 cout << "Enter the species of the lizard you want" << endl;
                 getline(cin,input);
@@ -281,9 +302,8 @@ int main() {
                     cout << "Species not found!" <<endl;
                 }
                 break;
-            case 1:
-                displayAll(data);
-                break;
+
+            //3. Display Number of lizards per habitat
             case 3: {
                 map<string,int> map = mapUniqueHabitat(data);
                 for (const auto& pair : map) {
@@ -291,15 +311,21 @@ int main() {
                 }
             }
                 break;
+
+            //4. Search lizards by Habitat
             case 4: {
                 cout << "Please input the name of what habitat you want" << endl;
                 getline(cin,input);
                 displaySpecificHabitat(data, input);
             }
                 break;
+
+            //5. Display interesting age info
             case 5:
                 displayAgeValues(data);
                 break;
+
+            //6. Search species by name
             case 6: {
                 cout << "Please input the name of what species you are searching for" << endl;
                 cin >> input;
@@ -309,25 +335,32 @@ int main() {
                     cout << *it << endl;
                 }
             }
-
                 break;
+
+            //7. Sort Lizards by Length - Desc
             case 7:
                 displaySortedLength(data);
                 break;
+
+            //8.Exit
             case 8:
                 cout << "Exiting program... See you next time!" << endl;
                 break;
+
+            //Ensuring valid inputs
             default:
                 cout << "Please input a valid option!" << endl;
 
         }
 
+        //Stopping the menu to give the person time
         if(menuOption != 8) {
             cout << "Press ENTER to continue" << endl;
             cin.ignore();
         }
-
-    }while (menuOption != 8);
+    }
+    //Ending the whole loop
+    while (menuOption != 8);
 
 
     /*displayAll(data);
