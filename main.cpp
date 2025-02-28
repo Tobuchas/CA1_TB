@@ -29,6 +29,7 @@ void display(const Lizard &liz)
 
 }
 
+//Method to display the whole table
 void displayAll(vector<Lizard> &liz) {
     cout <<" Species\t\t      Length\tHabitat\t       Diet\t      Age"<<endl;
     cout <<"_________________________________________________________________________"<<endl;
@@ -36,6 +37,7 @@ void displayAll(vector<Lizard> &liz) {
         display(liz[i]);
     }
 }
+
 
 void parseLine(string line,Lizard &liz)
 {
@@ -52,6 +54,7 @@ void parseLine(string line,Lizard &liz)
     liz.age = stoi(temp);
 
 }
+
 
 void load(const string &fname, vector<Lizard> &data)
 {
@@ -239,17 +242,95 @@ void displaySortedLength(vector<Lizard> &data) {
 
 
 int main() {
-    // Lizard lizard;
-    // lizard.species = "Crack";
-    // lizard.length = 3;
-    // lizard.habitat = "Canada";
-    // lizard.diet = "Doodoo";
-    // lizard.age = 20;
-    // display(lizard);
 
     vector<Lizard> data;
     load("lizardsTable.csv", data);
-    displayAll(data);
+
+    int menuOption;
+    string input;
+
+    do {
+        cout << "_________________________________________________\n";
+        cout << "#           Tomas's Database of Lizards         #\n";
+        cout << "_________________________________________________\n";
+        cout << "#              Select an option:                #\n";
+        cout << "#           1. Display all Lizards              #\n";
+        cout << "#           2. Find a specific lizard           #\n";
+        cout << "#     3. Display Number of lizards per habitat  #\n";
+        cout << "#         4. Search lizards by Habitat          #\n";
+        cout << "#       5. Display interesting age info         #\n";
+        cout << "#          6. Search species by name            #\n";
+        cout << "#       7. Sort Lizards by Length - Desc        #\n";
+        cout << "#                   8. Exit                     #\n";
+        cout << "_________________________________________________\n";
+
+        cin >> menuOption;
+        cin.ignore();
+
+        cout << endl;
+
+        switch(menuOption) {
+            case 2:
+                cout << "Enter the species of the lizard you want" << endl;
+                getline(cin,input);
+
+                if (find(data, input)>=0) {
+                    display(data[find(data, input)]);
+                }
+                else {
+                    cout << "Species not found!" <<endl;
+                }
+                break;
+            case 1:
+                displayAll(data);
+                break;
+            case 3: {
+                map<string,int> map = mapUniqueHabitat(data);
+                for (const auto& pair : map) {
+                    cout << pair.first << " => " << pair.second << endl;
+                }
+            }
+                break;
+            case 4: {
+                cout << "Please input the name of what habitat you want" << endl;
+                getline(cin,input);
+                displaySpecificHabitat(data, input);
+            }
+                break;
+            case 5:
+                displayAgeValues(data);
+                break;
+            case 6: {
+                cout << "Please input the name of what species you are searching for" << endl;
+                cin >> input;
+                cin.ignore();
+                vector<string> searchResults = findSpecies(data, input);
+                for(auto it = searchResults.begin(); it != searchResults.end(); it++) {
+                    cout << *it << endl;
+                }
+            }
+
+                break;
+            case 7:
+                displaySortedLength(data);
+                break;
+            case 8:
+                cout << "Exiting program... See you next time!" << endl;
+                break;
+            default:
+                cout << "Please input a valid option!" << endl;
+
+        }
+
+        if(menuOption != 8) {
+            cout << "Press ENTER to continue" << endl;
+            cin.ignore();
+        }
+
+    }while (menuOption != 8);
+
+
+    /*displayAll(data);
     cout << endl << endl << endl;
     map<string,int> map = mapUniqueHabitat(data);
     for (const auto& pair : map) {
@@ -274,6 +355,7 @@ int main() {
 
     cout << endl << endl << endl;
     displaySortedLength(data);
+    */
 
     return 0;
 
